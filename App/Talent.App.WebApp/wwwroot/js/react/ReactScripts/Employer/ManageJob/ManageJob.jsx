@@ -35,7 +35,11 @@ export default class ManageJob extends React.Component {
             totalPages: 1
 
         }
-                
+         
+        
+        this.handleClick = this.handleClick.bind(this);
+        this.handleSortChange = this.handleSortChange.bind(this);
+        this.handleFilter = this.handleFilter.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.getEmployerJobsViaAjax = this.getEmployerJobsViaAjax.bind(this);
         this.loadData = this.loadData.bind(this);
@@ -63,8 +67,8 @@ export default class ManageJob extends React.Component {
     };
 
     loadData(callback) {
-        //var link = 'http://localhost:51689/listing/listing/getSortedEmployerJobs?activePage=${this.state.activePage}&sortbyDate=${this.state.sortBy.date}&showActive=${this.state.filter.showActive}&showClosed=${this.state.filter.showClosed}&showDraft =${this.state.filter.showDraft}&showExpired=${this.state.filter.showExpired}&showUnexpired=${this.state.filter.showUnexpired}';
-        var link = 'http://localhost:51689/listing/listing/getSortedEmployerJobs';
+        //var link = 'https://talentservicestalent.azurewebsites.net/listing/listing/getSortedEmployerJobs?activePage=${this.state.activePage}&sortbyDate=${this.state.sortBy.date}&showActive=${this.state.filter.showActive}&showClosed=${this.state.filter.showClosed}&showDraft =${this.state.filter.showDraft}&showExpired=${this.state.filter.showExpired}&showUnexpired=${this.state.filter.showUnexpired}';
+        var link = 'https://talentservicestalent.azurewebsites.net/listing/listing/getSortedEmployerJobs';
         var cookies = Cookies.get('talentAuthToken');
         
      // your ajax call and other logic goes here
@@ -106,7 +110,7 @@ export default class ManageJob extends React.Component {
 
 
     getEmployerJobsViaAjax() {
-        var link = 'http://localhost:51689/listing/listing/getSortedEmployerJobs';
+        var link = 'https://talentservicestalent.azurewebsites.net/listing/listing/getSortedEmployerJobs';
         var cookies = Cookies.get('talentAuthToken');
         console.log("ManageJob: inside testAjax----");
         console.log(cookies);
@@ -187,9 +191,30 @@ pageChange(e,pagData){
 }
 
 
+handleSortChange(e, { value, name }) {
+    this.state.sortBy[name] = value;
+    this.loadNewData({ sortBy: this.state.sortBy });
+}
+
+handleFilter(e, { checked, name }) {
+    this.state.filter[name] = checked;
+    this.setState({
+        filter: this.state.filter
+    })
+}
+
+handleClick(e, titleProps) {
+    const { index } = titleProps
+    const { activeIndex } = this.state
+    const newIndex = activeIndex === index ? -1 : index
+
+    this.setState({ activeIndex: newIndex })
+}
+
     render() {
         var jblist= this.state.loadJobs;
         console.log(jblist);
+        const { activeIndex } = this.state;
         if(this.state.loadStatus){
         if(this.state.loadJobs.length > 0)
         {
@@ -197,10 +222,56 @@ pageChange(e,pagData){
             
             <BodyWrapper reload={this.init} loaderData={this.state.loaderData}>
                <div className ="ui container">
-               <Segment placeholder>
+               
+               {/* <Segment placeholder> */}
+
                <h1>List of Jobs</h1>
-               <Button primary onClick={() => this.getEmployerJobsViaAjax()}>getEmployerJobs</Button>
-               </Segment>
+               {/* <i className="filter icon" /> {"Filter: "} */}
+               <Icon name='filter'/>
+               <Dropdown inline simple text="Choose filter">
+               <Dropdown.Menu>
+                <Dropdown.Item key={"status"}> 
+                <Accordion>
+                    <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
+                    {/* <Icon name='dropdown' /> */}
+                    By Status
+                    </Accordion.Title>
+                    <Accordion.Content active={activeIndex === 1}>    
+                    <Checkbox label='Active Jobs'
+                        name="showActive" onChange={this.handleFilter} checked={this.state.filter.showActive} />
+                    <Checkbox label='Closed Jobs'
+                        name="showClosed" onChange={this.handleFilter} checked={this.state.filter.showClosed} />
+                    <Checkbox label='Drafts'
+                        name="showDraft" onChange={this.handleFilter} checked={this.state.filter.showDraft} />
+                </Accordion.Content>
+                 </Accordion>
+               </Dropdown.Item>
+                    <Dropdown.Item key={"expiryDate"}>
+                    <Accordion>
+                     <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
+                      <Icon name='dropdown' />
+                        By Expiry Date
+                        </Accordion.Title>
+                            <Accordion.Content active={activeIndex === 0}>
+                                        <Checkbox label='Expired Jobs'
+                                        name="showExpired" onChange={this.handleFilter} checked={this.state.filter.showExpired} />
+                                        <Checkbox label='Unexpired Jobs'
+                                        name="showUnexpired" onChange={this.handleFilter} checked={this.state.filter.showUnexpired} />
+                            </Accordion.Content>
+                    </Accordion>
+                </Dropdown.Item>
+                {/* <button className="ui teal small button"
+                                                style={{ width: "100%", borderRadius: "0" }}
+                                                onClick={() => this.loadNewData({ activePage: 1 })}
+                                            >
+                                                <i className="filter icon" />
+                                                Filter
+                                                </button> */}
+                <Button primary onClick={() => this.getEmployerJobsViaAjax()}>getEmployerJobs</Button>
+                </Dropdown.Menu>
+                </Dropdown>
+                {/* </Segment> */}
+
                <Segment placeholder>
                
                <Table fixed>

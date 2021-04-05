@@ -47,6 +47,13 @@ namespace Talent.Services.Listing.Controllers
             _talentService = talentService;
         }
 
+
+        [HttpGet("test")]
+        public IActionResult GetTest()
+        {
+            return Content("test - Tallent-Service-Talent-ON");
+        }
+
         [HttpPost("createUpdateJob")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "employer, recruiter")]
         public IActionResult CreateUpdateJob([FromBody]Job jobData)
