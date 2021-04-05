@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "task-Talent.Services",
+      "appliesTo": "Talent.Services.Identity/",
+      "type": "launch"
+    }
+  ]
+}
