@@ -1,0 +1,86 @@
+key={c.id}
+Hi Viren,
+
+You can sort either in front-end or Back-end.I am taking Customer has example.
+
+[Front-end-Customers.name]
+
+1. select a sortable Table. <Table sortable>
+
+2. at Table.HeaderCell look for event on Click() and manage the sorted variable.
+
+<Table.HeaderCell
+                sorted = {this.state.direction} 
+                onClick={() => this.sortCustomerNames()}>CUSTOMER NAME</Table.HeaderCell>
+3. define state variable direction with toggles between 'ascending' and 'descending' 
+
+4. create a function that execute on Click that compares the string. localeCompare() and use sort() and reverse().
+
+sortCustomerNames = () => {
+    if(this.state.listDecend){
+        this.state.customers.sort(function(a, b) {
+            var x = a.name.toLowerCase();
+        var y = b.name.toLowerCase();
+        return y.localeCompare(x)});
+        this.setState({listDecend: false});
+        this.setState({direction: 'ascending'});
+        console.log("sortCustomerNames ascending.......")
+        } else{
+            this.state.customers.reverse(function(a, b) {
+                var x = a.name.toLowerCase();
+                var y = b.name.toLowerCase();
+                return x.localeCompare(y)});
+            this.setState({listDecend: true});
+            this.setState({direction: 'descending'});     
+            console.log("sortCustomerNames decending.......")
+
+
+[Back-end for Customers]
+
+1. update the existing GetCustomer() action method or create a new one with parameters(ascending/descending, column_name_to_sortOn).
+
+2. 
+
+ .  
+
+Team-V Attendance (Watch Latest Recording or Join Live) - Minimum 7 - Current: 7
+
+6)  Employability Attendance (Watch Latest Recording or Join Live) - Minimum 6 - Current: 4
+
+7)  English at Work Attendance (Watch Latest Recording or Join Live) - Minimum 6 - Current: 4
+
+8)  MVP Studio Regional/Global Scrum Meeting Attendance (Watch Latest Recording or Join Live) - Minimum 16 - Current: 9
+
+Global Talent Team-V    22/03/2021, 09:57:20	Watch recording--- 
+Global Talent Team-V	15/03/2021, 09:55:06	Watch recording ---done
+Global Talent Team-V	08/03/2021, 09:55:30	Watch recording---done
+Global Talent Team-V	01/03/2021, 09:55:10	Watch recording ---Nop
+Global Talent Team-V	22/02/2021, 09:58:33	Watch recording --- done
+Global Talent Team-V	15/02/2021, 09:36:34  ----------------------done
+
+
+Global Talent - Employability	19/03/2021, 10:58:19	Watch recording --done
+Global Talent - Employability	12/03/2021, 11:01:09	Watch recording
+Global Talent - Employability	06/03/2021, 20:42:06	Watch recording
+Global Talent - Employability	05/03/2021, 11:00:44	Watch recording -- done
+Global Talent - Employability	26/02/2021, 10:58:24	Watch recording --done
+Global Talent - Employability	19/02/2021, 10:58:47	Watch recording
+Global Talent - Employability	12/02/2021, 10:59:40	Watch recording
+
+The Global Meeting at MVP Studio	25/03/2021, 09:59:19	Watch recording
+The Global Meeting at MVP Studio	18/03/2021, 09:59:45	Watch recording
+The Global Meeting at MVP Studio	11/03/2021, 09:59:28	Watch recording
+The Global Meeting at MVP Studio	04/03/2021, 09:59:06	Watch recording
+The Global Meeting at MVP Studio	25/02/2021, 09:59:09	Watch recording
+The Global Meeting at MVP Studio	18/02/2021, 09:58:54	Watch recording
+
+
+
+
+activePage=${this.state.activePage}
+&sortbyDate=${this.state.sortBy.date}
+&showActive=${this.state.filter.showActive}
+&showClosed=${this.state.filter.showClosed}
+&showDraft =${this.state.filter.showDraft}
+&showExpired=${this.state.filter.showExpired}
+&showUnexpired=${this.state.filter.showUnexpired}

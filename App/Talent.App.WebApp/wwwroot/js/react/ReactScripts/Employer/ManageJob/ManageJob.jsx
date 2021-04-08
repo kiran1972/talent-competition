@@ -5,7 +5,7 @@ import LoggedInBanner from '../../Layout/Banner/LoggedInBanner.jsx';
 import { LoggedInNavigation } from '../../Layout/LoggedInNavigation.jsx';
 import { JobSummaryCard } from './JobSummaryCard.jsx';
 import { BodyWrapper, loaderData } from '../../Layout/BodyWrapper.jsx';
-import { Button,Table,Pagination, Icon, Dropdown, Checkbox, Accordion, Form, Segment, Label } from 'semantic-ui-react';
+import { Menu,Button,Table,Pagination, Icon, Dropdown, Checkbox, Accordion, Form, Segment, Label } from 'semantic-ui-react';
 import moment from 'moment';
 
 export default class ManageJob extends React.Component {
@@ -22,6 +22,7 @@ export default class ManageJob extends React.Component {
             sortBy: {
                 date: "desc"
             },
+            mainMenuIndex: 1,
             filter: {
                 showActive: true,
                 showClosed: false,
@@ -29,14 +30,14 @@ export default class ManageJob extends React.Component {
                 showExpired: true,
                 showUnexpired: true
             },
-            activeIndex: "",
+            activeIndex: 0,
             loadStatus: false,
             currentPage: 1,
             totalPages: 1
 
         }
          
-        
+        this.handleClick1 = this.handleClick1.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleSortChange = this.handleSortChange.bind(this);
         this.handleFilter = this.handleFilter.bind(this);
@@ -204,17 +205,34 @@ handleFilter(e, { checked, name }) {
 }
 
 handleClick(e, titleProps) {
+    console.log("HandleClick");
+    console.log(titleProps);
     const { index } = titleProps
-    const { activeIndex } = this.state
+     const { activeIndex } = this.state
     const newIndex = activeIndex === index ? -1 : index
-
     this.setState({ activeIndex: newIndex })
 }
+
+handleClick1(e, titleProps) {
+    console.log("HandleClick1");
+    console.log(titleProps);
+    const { index } = titleProps;
+    console.log("HandleClick1---Index");
+    const { mainMenuIndex } = this.state;
+    console.log("HandleClick1----mainMenuIndex");
+    const newIndex = mainMenuIndex === index ? -1 : index
+
+    this.setState({ mainMenuIndex: newIndex })
+}
+
 
     render() {
         var jblist= this.state.loadJobs;
         console.log(jblist);
         const { activeIndex } = this.state;
+        const { mainMenuIndex } = this.state;
+
+        console.log("IS it Updating???......");
         if(this.state.loadStatus){
         if(this.state.loadJobs.length > 0)
         {
@@ -225,41 +243,68 @@ handleClick(e, titleProps) {
                
                {/* <Segment placeholder> */}
 
-               <h1>List of Jobs</h1>
+               {/* <h1>List of Jobs</h1> */}
                {/* <i className="filter icon" /> {"Filter: "} */}
-               <Icon name='filter'/>
-               <Dropdown inline simple text="Choose filter">
+               {/* <Icon name='filter'/> */}
+               {/* <Dropdown inline simple text="Choose filter">
                <Dropdown.Menu>
                 <Dropdown.Item key={"status"}> 
-                <Accordion>
-                    <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
-                    {/* <Icon name='dropdown' /> */}
+                */} 
+                <Accordion as={Menu} vertical >
+                <Menu.Item>
+                    <Accordion.Title active={mainMenuIndex === 0} index={0} onClick={this.handleClick1} >
+                    <Icon name='filter'/> {"Filter:"}
+                    <Icon name='dropdown' />
+                    </Accordion.Title>
+                    <Accordion.Content active={mainMenuIndex === 0} >    
+                    
+                <Accordion as={Menu} vertical>
+                    <Menu.Item>
+                        <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
+                    {/*      */}
+                    <Icon name='dropdown' />
                     By Status
                     </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 1}>    
+                    <Accordion.Content active={activeIndex === 0} >    
+                    <Form>
+                    <Form.Group grouped>
                     <Checkbox label='Active Jobs'
                         name="showActive" onChange={this.handleFilter} checked={this.state.filter.showActive} />
                     <Checkbox label='Closed Jobs'
                         name="showClosed" onChange={this.handleFilter} checked={this.state.filter.showClosed} />
                     <Checkbox label='Drafts'
                         name="showDraft" onChange={this.handleFilter} checked={this.state.filter.showDraft} />
-                </Accordion.Content>
-                 </Accordion>
-               </Dropdown.Item>
-                    <Dropdown.Item key={"expiryDate"}>
-                    <Accordion>
-                     <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
-                      <Icon name='dropdown' />
-                        By Expiry Date
-                        </Accordion.Title>
-                            <Accordion.Content active={activeIndex === 0}>
-                                        <Checkbox label='Expired Jobs'
+                    </Form.Group>
+                    </Form>
+                        </Accordion.Content>
+                    </Menu.Item>
+                </Accordion>
+               
+               {/*   </Dropdown.Item>
+                    <Dropdown.Item key={"expiryDate"}>*/}
+                    <Accordion as={Menu} vertical>  
+                        <Menu.Item>
+                            <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
+                                <Icon name='dropdown' />
+                                    By Expiry Date
+                            </Accordion.Title>
+                        <Accordion.Content active={activeIndex === 1}>
+                            <Form>
+                                <Form.Group grouped>
+                                    <Checkbox label='Expired Jobs'
                                         name="showExpired" onChange={this.handleFilter} checked={this.state.filter.showExpired} />
-                                        <Checkbox label='Unexpired Jobs'
+                                    <Checkbox label='Unexpired Jobs'
                                         name="showUnexpired" onChange={this.handleFilter} checked={this.state.filter.showUnexpired} />
-                            </Accordion.Content>
-                    </Accordion>
-                </Dropdown.Item>
+                                </Form.Group>
+                            </Form>
+                        </Accordion.Content>
+                        </Menu.Item>
+                     </Accordion> 
+                     
+                     {/* <Accordion> 
+                        <Menu.Item>
+                            <Accordion.Content active={activeIndex === 2}> */}
+                {/* </Dropdown.Item> */}
                 {/* <button className="ui teal small button"
                                                 style={{ width: "100%", borderRadius: "0" }}
                                                 onClick={() => this.loadNewData({ activePage: 1 })}
@@ -267,9 +312,16 @@ handleClick(e, titleProps) {
                                                 <i className="filter icon" />
                                                 Filter
                                                 </button> */}
-                <Button primary onClick={() => this.getEmployerJobsViaAjax()}>getEmployerJobs</Button>
-                </Dropdown.Menu>
-                </Dropdown>
+                                <Button primary onClick={() => this.getEmployerJobsViaAjax()}>getEmployerJobs</Button>
+                            {/* </Accordion.Content>
+                        </Menu.Item>
+                    </Accordion> */}
+                    </Accordion.Content> 
+                </Menu.Item>
+                </Accordion>
+               
+                {/* </Dropdown.Menu>
+                </Dropdown> */}
                 {/* </Segment> */}
 
                <Segment placeholder>

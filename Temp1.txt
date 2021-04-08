@@ -1,0 +1,65 @@
+loadData() {
+        var cookies = Cookies.get('talentAuthToken');
+        $.ajax({
+            url: 'http://localhost:60290/profile/profile/getTalentProfile',
+            headers: {
+                'Authorization': 'Bearer ' + cookies,
+                'Content-Type': 'application/json'
+            },
+            type: "GET",
+            success: function (res) {
+                this.updateWithoutSave(res.data)
+            }.bind(this)
+        })
+        this.init()
+    }
+
+
+Key Responsibilities
+
+This Intermediate Full Stack Developer will implement code for effective and stable services to a large user community with diverse requirements.
+Ensure that the code is written to a high standard.
+Participate in agile design and development processes and code reviews, sharing knowledge with others in the team.
+Your documentation will have to be clear and concise and you will support what you write.
+Assist with the growth and development of yourself and others in the team, gaining appropriate certifications over time.
+Key Requirements for Intermediate Full Stack Developer
+
+Experienced in a SaaS environment
+Have commercial ASP .NET and Javascript development experience
+Experience working with cloud-based platforms e.g., Azure
+Proficiency in C#, HTML, Microsoft, and JavaScript is highly desirable
+Must be able to work in a small team environment and have excellent communication skills.
+Emphasis will be placed on those that want to participate in a learning environment.
+
+
+
+
+<Form>
+                <Form.Group grouped>
+                    <Form.Checkbox label='Active Jobs'
+                        name="showActive" onChange={this.handleFilter} checked={this.state.filter.showActive} />
+                    <Form.Checkbox label='Closed Jobs'
+                        name="showClosed" onChange={this.handleFilter} checked={this.state.filter.showClosed} />
+                    <Form.Checkbox label='Drafts'
+                        name="showDraft" onChange={this.handleFilter} checked={this.state.filter.showDraft} />
+                </Form.Group>
+                </Form>
+                </Accordion.Content>
+                 </Accordion>
+               </Dropdown.Item>
+                    <Dropdown.Item key={"expiryDate"}>
+                    <Accordion>
+                     <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
+                      <Icon name='dropdown' />
+                        By Expiry Date
+                        </Accordion.Title>
+                            <Accordion.Content active={activeIndex === 0}>
+                                <Form>
+                                    <Form.Group grouped>
+                                        <Form.Checkbox label='Expired Jobs'
+                                        name="showExpired" onChange={this.handleFilter} checked={this.state.filter.showExpired} />
+                                        <Form.Checkbox label='Unexpired Jobs'
+                                        name="showUnexpired" onChange={this.handleFilter} checked={this.state.filter.showUnexpired} />
+                                        </Form.Group>
+                                </Form>
+               
