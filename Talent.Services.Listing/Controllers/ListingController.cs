@@ -236,6 +236,8 @@ namespace Talent.Services.Listing.Controllers
                 if (userId == _userAppContext.CurrentUserId)
                 {
                     var jobStatus = JobStatus.Closed;
+                   
+
                     await _jobService.UpdateJobStatusAsync(id, jobStatus);
                     return Json(new { Success = true, Message = "Job updated successfully" });
                 }
